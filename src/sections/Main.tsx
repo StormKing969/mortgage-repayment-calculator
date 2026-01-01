@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { calculateAmount } from "../utils/caculations.ts";
 import type { calculationResultType, loanValuesType } from "../types";
 
-type mortgageOptions = "repayment" | "interestOnly";
+type mortgageOptions = "repayment" | "interestOnly" | "";
 
 const Main = () => {
   const [loanValues, setLoanValues] = useState<loanValuesType>({
@@ -16,7 +16,8 @@ const Main = () => {
     totalInterest: "",
   });
   const [calculated, setCalculated] = useState<boolean>(false);
-  const [requestType, setRequestType] = useState<mortgageOptions>("repayment");
+  const [requestType, setRequestType] = useState<mortgageOptions>("");
+  const [error, setError] = useState<boolean>(false);
 
   const handleInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -36,10 +37,14 @@ const Main = () => {
     if (
       Number(loanValues.amount) <= 0 ||
       Number(loanValues.term) <= 0 ||
-      Number(loanValues.interest) < 0
+      Number(loanValues.interest) < 0 ||
+      requestType === ""
     ) {
       console.error("Missing required fields");
+      setError(true);
       return;
+    } else {
+      setError(false);
     }
 
     try {
@@ -60,10 +65,12 @@ const Main = () => {
     });
   };
 
+  console.log(loanValues);
+
   return (
     <div
       className={
-        "bg-white flex flex-col md:flex-row justify-evenly md:shadow-[0_15px_35px_rgba(0,0,0,0.45)] md:rounded-2xl"
+        "bg-white flex flex-col md:flex-row justify-evenly md:shadow-[0_15px_35px_rgba(0,0,0,0.45)] md:rounded-2xl md:max-w-[1080px]"
       }
     >
       <section className={"py-6 px-4 md:px-8 md:rounded-l-2xl md:min-w-1/2"}>
@@ -86,7 +93,9 @@ const Main = () => {
         <form onSubmit={handleOnSubmit}>
           <div className={"form-input"}>
             <label>Mortgage Amount</label>
-            <div className={"input-area-modification-1"}>
+            <div
+              className={`input-area-modification-1 ${error && loanValues.amount <= 0 ? "error-display" : ""}`}
+            >
               <input
                 type="text"
                 inputMode="numeric"
@@ -94,18 +103,24 @@ const Main = () => {
                 name="amount"
                 value={loanValues.amount != 0 ? loanValues.amount : ""}
                 onChange={handleInputs}
-                required={true}
               />
               <div>
                 <span>$</span>
               </div>
             </div>
+            <p
+              className={`${error && loanValues.amount <= 0 ? "text-red-500 text-sm mt-1 font-semibold" : "hidden"}`}
+            >
+              This field is required
+            </p>
           </div>
 
           <div className={"md:flex md:flex-row md:justify-between md:gap-4"}>
             <div className={"form-input"}>
               <label>Mortgage Term</label>
-              <div className={"input-area-modification-2"}>
+              <div
+                className={`input-area-modification-2 ${error && loanValues.term <= 0 ? "error-display" : ""}`}
+              >
                 <input
                   type="text"
                   inputMode="numeric"
@@ -113,17 +128,23 @@ const Main = () => {
                   name="term"
                   value={loanValues.term != 0 ? loanValues.term : ""}
                   onChange={handleInputs}
-                  required={true}
                 />
                 <div>
                   <span>years</span>
                 </div>
               </div>
+              <p
+                className={`${error && loanValues.term <= 0 ? "text-red-500 text-sm mt-1 font-semibold" : loanValues.interest <= 0 ? "text-white" : "hidden"}`}
+              >
+                This field is required
+              </p>
             </div>
 
             <div className={"form-input"}>
               <label>Interest Rate</label>
-              <div className={"input-area-modification-2"}>
+              <div
+                className={`input-area-modification-2 ${error && loanValues.interest <= 0 ? "error-display" : ""}`}
+              >
                 <input
                   type="text"
                   inputMode="decimal"
@@ -131,12 +152,16 @@ const Main = () => {
                   name="interest"
                   value={loanValues.interest != 0 ? loanValues.interest : ""}
                   onChange={handleInputs}
-                  required
                 />
                 <div>
                   <span>%</span>
                 </div>
               </div>
+              <p
+                className={`${error && loanValues.interest <= 0 ? "text-red-500 text-sm mt-1 font-semibold" : loanValues.term <= 0 ? "text-white" : "hidden"}`}
+              >
+                This field is required
+              </p>
             </div>
           </div>
 
@@ -159,9 +184,8 @@ const Main = () => {
                   type="radio"
                   name="mortgageType"
                   value={requestType}
-                  checked={requestType === "repayment"}
                   className={"mr-4"}
-                  onClick={() => setRequestType("repayment")}
+                  onChange={() => setRequestType("repayment")}
                 />
                 <span className={"font-bold text-lg"}>Repayment</span>
               </label>
@@ -172,12 +196,16 @@ const Main = () => {
                   type="radio"
                   name="mortgageType"
                   value={requestType}
-                  checked={requestType === "interestOnly"}
                   className={"mr-4"}
-                  onClick={() => setRequestType("interestOnly")}
+                  onChange={() => setRequestType("interestOnly")}
                 />
                 <span className={"font-bold text-lg"}>Interest Only</span>
               </label>
+              <p
+                className={`${error && requestType === "" ? "text-red-500 text-sm mt-1 font-semibold" : "hidden"}`}
+              >
+                This field is required
+              </p>
             </div>
           </div>
 

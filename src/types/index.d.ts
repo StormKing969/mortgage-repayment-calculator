@@ -1,7 +1,7 @@
 export interface loanValuesType {
-  amount: number | string;
-  term: number | string;
-  interest: number | string;
+  amount: number ;
+  term: number ;
+  interest: number ;
 }
 
 export interface calculationResultType {

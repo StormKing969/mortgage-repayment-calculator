@@ -12,7 +12,7 @@
   @apply h-[45px] border-2 rounded border-neutral-500 relative w-full;
 
   input {
-    @apply absolute top-1/2 left-1/8 md:left-1/9 lg:left-1/12 transform -translate-y-1/2 w-10/12 h-full font-bold cursor-pointer;
+    @apply absolute top-1/2 left-1/8 md:left-1/9 lg:left-1/12 transform -translate-y-1/2 w-10/12 h-full font-bold cursor-pointer focus:outline-none;
   }
 
   div {
@@ -28,7 +28,7 @@
   @apply h-[45px] border-2 rounded border-neutral-500 relative;
 
   input {
-    @apply absolute top-1/2 left-3 transform -translate-y-1/2 w-9/12 h-full font-bold cursor-pointer;
+    @apply absolute top-1/2 left-3 transform -translate-y-1/2 w-9/12 h-full font-bold cursor-pointer focus:outline-none;
   }
 
   div {
@@ -42,4 +42,12 @@
 
 .radio-button {
     @apply border-2 rounded border-neutral-500 p-2 cursor-pointer;
+}
+
+.error-display {
+  @apply border-red-500;
+
+  div {
+    @apply bg-red-500 text-white
+  }
 }
