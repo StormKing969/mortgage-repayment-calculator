@@ -31,7 +31,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [https://github.com/StormKing969/mortgage-repayment-calculator](https://github.com/StormKing969/mortgage-repayment-calculator)
-- Live Site URL: [https://stormking969.github.io/mortgage-repayment-calculator/](https://stormking969.github.io/mortgage-repayment-calculator/)
+- Live Site URL: [https://repayment-mortgage-calculator.netlify.app/](https://repayment-mortgage-calculator.netlify.app/)
 
 ## My process
 
